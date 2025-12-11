@@ -23,23 +23,27 @@ public class PotionCollisionDetection : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Potion"))
         {
-            Renderer potionRenderer = other.GetComponent<Renderer>();
-            AddPotion(potionRenderer);
-            Destroy(other.gameObject);
+            PotionDescription pdd;
+            other.gameObject.TryGetComponent(out pdd);
+            if (pdd)
+            {
+                AddPotion(pdd.gameObject.GetComponent<PotionDescription>().TakeColor());
+                Destroy(other.gameObject);
+            }
         }
     }
 
-    public void AddPotion(Renderer potionRenderer)
+    public void AddPotion(Color NewColor)
     {
-        MeshRenderer renderer = liquid.GetComponent<MeshRenderer>();
+        Renderer renderer = liquid.GetComponent<MeshRenderer>();
         var main = particleSystem.main;
-        main.startColor = potionRenderer.material.color;
+        main.startColor = NewColor;
         particleSystem.Play();
-        renderer.material.color = potionRenderer.material.color;
+        renderer.material.color = NewColor;
         Color temp = renderer.material.color;
-        if (globalVolume != null)
+        if (globalVolume)
         {
-            colorAdjustments.colorFilter.value = renderer.material.color;
+            colorAdjustments.colorFilter.value = NewColor;
         }
     }
 }
