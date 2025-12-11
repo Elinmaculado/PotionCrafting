@@ -41,9 +41,6 @@ public class PotionCollisionDetection : MonoBehaviour
         particleSystem.Play();
         renderer.material.color = NewColor;
         Color temp = renderer.material.color;
-        if (globalVolume)
-        {
-            colorAdjustments.colorFilter.value = NewColor;
-        }
+        colorAdjustments.colorFilter.value = NewColor;
     }
 }
